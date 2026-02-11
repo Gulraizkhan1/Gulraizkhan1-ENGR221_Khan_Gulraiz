@@ -1,0 +1,4 @@
+{
+  "playlist_tests.py::test_delete_playlist": true,
+  "playlist_tests.py::test_deleteplaylist_absent": true
+}
