@@ -1,3 +1,9 @@
+"""
+Author: Gulraiz Khan
+Filename: nodupleplaylist.py
+Description: Implementation of a playlist as an array with duplicates
+"""
+
 
 # test using this in the terminal        
 # python3 -m pytest -v tests/nodupes_tests.py                  

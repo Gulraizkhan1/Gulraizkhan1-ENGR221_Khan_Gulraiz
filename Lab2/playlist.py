@@ -1,5 +1,5 @@
 """
-Author: YOUR NAME
+Author: Gulraiz Khan
 Filename: playlist.py
 Description: Implementation of a playlist as an array with duplicates
 """
