@@ -46,7 +46,7 @@ class Playlist():
     def insert_song(self, song):
         if self.num_songs >= self.max_num_songs:
             self.songs = self.songs + [None]
-            self.max_num_songs += 1
+            self.max_num_songs = self.max_num_songs + 1
 
         self.songs[self.num_songs] = song
          
@@ -76,36 +76,26 @@ class Playlist():
     # Delete the first occurrence of the song title in the playlist
     # Returns True if the song was deleted, or False if not
     def delete_by_title(self, song_title):
+        deleted_song_count = 0
+        diff_idx = 0
+        original_num_songs = self.num_songs
 
-        temp_songs_list = []
-        num_songs_deleted = 0; 
+        for idx in range(original_num_songs):
+            if self.songs[idx].title == song_title:
+                deleted_song_count = deleted_song_count + 1
+            else: 
+                self.songs[diff_idx] = self.songs[idx]
+                diff_idx = diff_idx + 1
 
-        for idx in range(self.num_songs):
-            current_song = self.songs[idx]
+        for j in range(diff_idx, original_num_songs):
+            self.songs[j] = None
 
-            if current_song.title == song_title:
-                num_songs_deleted += 1
-            
-            else:
-                temp_songs_list.append(current_song)
+        self.num_songs = diff_idx
+
+        return deleted_song_count
 
 
-        # Find the index of the song to delete
-        idx = self.search_by_title(song_title)
 
-        # If the song was not found, we cannot delete it
-        if idx == -1:
-            return False 
-        
-        # Otherwise, proceed by decrementing the size of the playlist
-        self.num_songs -= 1
-
-        # Then shift all the remaining songs in the playlist
-        for j in range(idx, self.num_songs):
-            self.songs[j] = self.songs[j+1]
-        
-        # Return True to indicate that the song was deleted
-        return True 
     
     # Print all songs in the playlist
     def traverse(self):
