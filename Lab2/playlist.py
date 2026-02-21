@@ -2,6 +2,7 @@
 Author: Gulraiz Khan
 Filename: playlist.py
 Description: Implementation of a playlist as an array with duplicates
+Date: Feb 16, 2026
 """
 
 from song import Song
@@ -51,12 +52,6 @@ class Playlist():
         self.songs[self.num_songs] = song
          
 
-            
-            
-
-            
-        #self.num_songs = self
-
         # Update the length of the playlist
         self.num_songs += 1
 
@@ -77,20 +72,20 @@ class Playlist():
     # Returns True if the song was deleted, or False if not
     def delete_by_title(self, song_title):
         deleted_song_count = 0
-        diff_idx = 0
+        move_song_idx = 0
         original_num_songs = self.num_songs
 
         for idx in range(original_num_songs):
             if self.songs[idx].title == song_title:
                 deleted_song_count = deleted_song_count + 1
             else: 
-                self.songs[diff_idx] = self.songs[idx]
-                diff_idx = diff_idx + 1
+                self.songs[move_song_idx] = self.songs[idx]
+                move_song_idx = move_song_idx + 1
 
-        for j in range(diff_idx, original_num_songs):
+        for j in range(move_song_idx, original_num_songs):
             self.songs[j] = None
 
-        self.num_songs = diff_idx
+        self.num_songs = move_song_idx
 
         return deleted_song_count
 

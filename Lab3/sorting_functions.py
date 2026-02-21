@@ -2,6 +2,7 @@
 Name: Gulraiz Khan
 sortingFunctions.py
 Description: Implementation of sorting algorithms.
+Date:
 """
 
 import time, random
@@ -59,4 +60,4 @@ def get_runtime(function_to_run, list_length):
 
 if __name__ == '__main__':
     print(get_runtime(insertion_sort, 100000))
-    print(get_runtime(bubble_sort, 100000))
+    #print(get_runtime(bubble_sort, 100000))
