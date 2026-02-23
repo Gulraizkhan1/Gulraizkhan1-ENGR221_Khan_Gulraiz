@@ -2,13 +2,13 @@
 Name: Gulraiz Khan
 sortingFunctions.py
 Description: Implementation of sorting algorithms.
-Date:
+Date: Feb 16, 2026
 """
 
 import time, random
 
 def insertion_sort(list_to_sort):
-    """ Add a description here """
+    """ This is the insertion_sort function """
 
     for i in range(len(list_to_sort)):
         j = i 
@@ -21,7 +21,7 @@ def insertion_sort(list_to_sort):
 
 
 def bubble_sort(list_to_sort):
-    """ Add a description here """
+    """ This is the bubble_sort function"""
 
     n = len(list_to_sort)
 
@@ -29,6 +29,7 @@ def bubble_sort(list_to_sort):
         for j in range(0, n - i - 1):
             if list_to_sort[j] > list_to_sort[j + 1]:
                 list_to_sort[j], list_to_sort[j + 1] = list_to_sort[j + 1], list_to_sort[j]
+
     
     return list_to_sort
     
@@ -59,5 +60,5 @@ def get_runtime(function_to_run, list_length):
     return end_time - start_time
 
 if __name__ == '__main__':
-    print(get_runtime(insertion_sort, 100000))
-    #print(get_runtime(bubble_sort, 100000))
+    print(get_runtime(insertion_sort, 100))
+    #print(get_runtime(bubble_sort, 100))
