@@ -53,7 +53,7 @@ class Preferences:
    COLOR_BACKGROUND = pygame.Color('lavender')
    COLOR_WALL = pygame.Color('gray40')
    COLOR_FOOD = pygame.Color('firebrick')
-   COLOR_EMPTY = pygame.Color('lavender')
+   COLOR_EMPTY = pygame.Color('green')
    COLOR_HEAD = pygame.Color('darkorchid4')
    COLOR_BODY = pygame.Color('darkorchid1')
 
@@ -76,6 +76,6 @@ class Preferences:
    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
    # Image to display as the head
-   HEAD_IMAGE = os.path.join(BASE_DIR, "trainer.png")
+   HEAD_IMAGE = os.path.join(BASE_DIR, "bunny.png")
    # Sound to play when eating
-   EAT_SOUND = os.path.join(BASE_DIR, "meow.wav")
+   EAT_SOUND = os.path.join(BASE_DIR, "jump-boing.wav")

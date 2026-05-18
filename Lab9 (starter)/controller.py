@@ -116,7 +116,12 @@ class Controller():
    def updateSnake(self):
        """ Move the snake forward one step, either in the current
            direction, or as directed by the AI """
-
+       
+       # --- CUSTOM SPEED SCALING ---
+       # Base speed refreshes every 2 cycles. As score rises, 
+       # reduce cycles down to 1 so the frame rate goes hyper-fast!
+       current_score = self.__data.getScore()
+       dynamic_refresh = max(1, Preferences.REFRESH_RATE - (current_score // 3))
 
        # Move the snake once every REFRESH_RATE cycles
        if self.__numCycles % Preferences.REFRESH_RATE == 0:
@@ -162,44 +167,54 @@ class Controller():
            Returns the *next* step the snake should take along the shortest path
            to the closest food cell. """
       
-       # Parepare all the tiles to search
+       # Prepare all the tiles to search (clears old parent pointers and flags)
        self.__data.resetCellsForSearch()
-
 
        # Initialize a queue to hold the tiles to search
        cellsToSearch = Queue()
-
 
        # Add the head to the queue and mark it as added
        head = self.__data.getSnakeHead()
        head.setAddedToSearchList()
        cellsToSearch.put(head)
 
-
        # Search!
-       # TODO implement BFS here
+       while not cellsToSearch.empty():
+           currentCell = cellsToSearch.get()
 
+           # If we found a cell containing food, reconstruct the path to it!
+           if currentCell.isFood():
+               return self.getFirstCellInPath(currentCell)
 
-       # If the search failed, return a random neighbor
+           # Explore neighbors (North, South, East, West)
+           neighbors = self.__data.getNeighbors(currentCell)
+           for neighbor in neighbors:
+               # The AI can only move into empty or food cells.
+               # It must completely avoid walls and snake bodies!
+               if not neighbor.alreadyAddedToSearchList() and (neighbor.isEmpty() or neighbor.isFood()):
+                   neighbor.setAddedToSearchList()
+                   neighbor.setParent(currentCell)  # Link it back to remember the path
+                   cellsToSearch.put(neighbor)
+
+       # If the search failed (no path found to food), return a safe random neighbor
        return self.__data.getRandomNeighbor(head)
-
+   
 
    def getFirstCellInPath(self, foodCell):
-       """ TODO COMMENT HERE """
+       """ Walks backward from the found food cell using parent pointers 
+           to find the very next step adjacent to the snake's head. """
+       current = foodCell
+       head = self.__data.getSnakeHead()
 
-
-       # TODO
+       # Loop backward until the current cell's parent is the snake's head
+       while current.getParent() is not None and current.getParent() != head:
+           current = current.getParent()
       
-       return foodCell
+       return current
   
    def reverseSnake(self):
-       """ TODO COMMENT HERE """
-
-
-       # TODO
-
-
-       pass
+        """ Triggers a data-state flip reversing head and tail structures """
+        self.__data.reverseSnakeData()
 
 
    def playSound_eat(self):

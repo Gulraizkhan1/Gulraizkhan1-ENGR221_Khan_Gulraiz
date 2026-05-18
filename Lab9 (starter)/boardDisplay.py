@@ -35,6 +35,11 @@ class BoardDisplay:
                # Draw the square on screen
                self.drawSquare(cell)
 
+        # --- CUSTOM RENDER: DRAW LIVE SCORE ---
+       score_font = pygame.font.SysFont("arial", 24, bold=True)
+       score_text = score_font.render(f"SCORE: {gameData.getScore()}", True, pygame.Color('black'))
+       self.__display.blit(score_text, (25, 25)) # Places text at top-left corner (X:25, Y:25)
+
 
        # Draw the game over message, if appropriate
        if gameData.getGameOver():

@@ -46,6 +46,12 @@ class GameData:
        # Whether or not the game is over
        self.__gameOver = False
 
+       # Score tracker
+       self.__score = 0
+
+       # Obstacle tracker
+       self.__obstacleCells = []  # Tracks custom obstacle blocks
+
 
    ##########################
    # Initialization methods #
@@ -193,6 +199,29 @@ class GameData:
        self.__foodCells.remove(nextCell)
        self.__freeCells += 1
 
+       # Custom changes 
+       self.__score += 1         # Boost score counter
+       self.addObstacle()        # Spawn a new hazard on the board!
+
+
+   def addObstacle(self):
+       """ Spawns a permanent dangerous obstacle cell randomly on the map """
+       row = random.randrange(1, self.__height)
+       col = random.randrange(1, self.__width)
+       cell = self.getCell(row, col)
+
+       # Only place it if the space is completely empty
+       if cell.isEmpty():
+           cell.becomeWall() # Turning it into a wall makes it instantly lethal!
+           self.__obstacleCells.append(cell)
+           self.__freeCells -= 1
+       else:
+           self.addObstacle() # Retry if slot was taken
+
+   def getScore(self):
+       """ Accessor to get current points """
+       return self.__score    
+
 
    ###############################
    # Methods to access neighbors #
@@ -324,15 +353,39 @@ class GameData:
    ################################
    # Helper method(s) for reverse #
    ################################
-  
-   # TODO Write method(s) here to help reverse the snake
+   def reverseSnakeData(self):
+        """ Reverses the order of the snake cells, flips head/tail designations,
+            and calculates the new movement direction based on the flip. """
+        if len(self.__snakeCells) < 2:
+            return  # Can't reverse a snake with no body segments
 
+        # 1. Unlabel the old head (turn it into a standard body segment color)
+        self.getSnakeHead().becomeBody()
 
-   # Steps:
-   #  - Unlabel the head
-   #  - Reverse the body
-   #  - Relabel the head
-   #  - Calculate the new direction of the snake
+        # 2. Reverse the tracking array list elements
+        self.__snakeCells.reverse()
+
+        # 3. Relabel the new head (the old tail tile becomes the head)
+        self.getSnakeHead().becomeHead()
+
+        # 4. Calculate the new direction of the snake
+        # Compare where the new head is relative to its immediate neighbor (the neck)
+        head = self.getSnakeHead()
+        neck = self.getSnakeNeck()
+
+        # If the head is north of the neck, we are traveling north
+        if head.getRow() < neck.getRow():
+            self.setDirectionNorth()
+        # If the head is south of the neck, we are traveling south
+        elif head.getRow() > neck.getRow():
+            self.setDirectionSouth()
+        # If the head is east of the neck, we are traveling east
+        elif head.getCol() > neck.getCol():
+            self.setDirectionEast()
+        # If the head is west of the neck, we are traveling west
+        elif head.getCol() < neck.getCol():
+            self.setDirectionWest()
+
 
 
    #################################
